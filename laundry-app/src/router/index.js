@@ -1,37 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+// router.js
+import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Splashscreen,Homescreen } from '../pages';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Userscreen from '../pages/Userscreen';
-import ButtomTabs from '../components/molecus/BottomTabs';
-
+import { Splashscreen,Trackscreen,FormAddRequestscreen,FormUpdateRequestscreen,FormAddUserscreen,FormUpdateUserscreen } from '../pages';
+import MainApp from './MainApp';
 
 const Stack = createStackNavigator();
 
-const Tab = createBottomTabNavigator();
-
-
-function MainApp() {
-  return (
-    <Tab.Navigator screenOptions={{ headerShown:false }} tabBar={props => <ButtomTabs {...props} />}>
-      <Tab.Screen name="Homescreen" component={Homescreen} />
-      <Tab.Screen name="Userscreen" component={Userscreen} />
-    </Tab.Navigator>
-  );
-}
-
-
 const Router = () => {
   return (
-  <Stack.Navigator screenOptions={{ headerShown:false }}>
-        <Stack.Screen name="Splashscreen" component={Splashscreen} />    
-        <Stack.Screen name="Homescreen" component={Homescreen} />    
-        <Stack.Screen name="Userscreen" component={Userscreen} />    
-  </Stack.Navigator>
-  )
-}
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Splashscreen" component={Splashscreen} />
+      <Stack.Screen name="Trackscreen" component={Trackscreen} />
+      <Stack.Screen name="FormAddRequestscreen" component={FormAddRequestscreen} />
+      <Stack.Screen name="FormAddUserscreen" component={FormAddUserscreen} />
+      <Stack.Screen name="FormUpdateRequestscreen" component={FormUpdateRequestscreen} />
+      <Stack.Screen name="FormUpdateUserscreen" component={FormUpdateUserscreen} />
+      <Stack.Screen name="MainApp" component={MainApp} />
+    </Stack.Navigator>
+  );
+};
 
-export default MainApp
-
-const styles = StyleSheet.create({})
+export default Router;

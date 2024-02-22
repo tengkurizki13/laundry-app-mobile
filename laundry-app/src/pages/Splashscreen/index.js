@@ -8,7 +8,7 @@ const Splashscreen = ({navigation}) => {
     const animation = useRef(null);
     useEffect(() => {
         setTimeout(() => {
-            navigation.replace("MainApp")
+            navigation.navigate("MainApp")
         },2000)
     },[])
 

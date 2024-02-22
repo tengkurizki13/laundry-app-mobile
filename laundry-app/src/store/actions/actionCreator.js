@@ -5,8 +5,9 @@ import {
   USERS_FETCH_SUCCESS,
   TRACKS_FETCH_SUCCESS,
   USERS_BY_ID_FETCH_SUCCESS,
+  REQUESTS_OWNER_FETCH_SUCCESS
 } from "./actionType";
-import Swal from 'sweetalert2';
+import { Alert } from 'react-native';
 
 
 // fuction to create data to reducer
@@ -16,6 +17,14 @@ export const requestsFetchSuccess = (payload) => {
     payload: payload,
   };
 };
+
+export const requestsOwnerFetchSuccess = (payload) => {
+  return {
+    type: REQUESTS_OWNER_FETCH_SUCCESS,
+    payload: payload,
+  };
+};
+
 
 export const requestByidFetchSuccess = (payload) => {
   return {
@@ -55,27 +64,27 @@ export const fetchRequests = (filter = "", search = "", startDate = "", endDate 
   return async (dispatch) => {
     try {
      
-      
       // Membangun URL berdasarkan filter, pencarian, dan rentang waktu
       let url = BASE_URL + `/api/requests?filter=${filter}&search=${search}`;
       if (startDate && endDate) {
         url += `&startDate=${startDate}&endDate=${endDate}`;
       }
-      console.log(url,"safdsa");
 
+      
       // Mengirim permintaan GET ke API dengan URL yang dibangun
       const response = await fetch(url, {
         headers: {
           access_token: 'localStorage.getItem("access_token")',
         },
       });
-
-
+      
+      
       // Jika respons tidak ok, lempar error
       if (!response.ok) throw new Error("upss something wrong");
 
       // Mengonversi data respons menjadi JSON
       const data = await response.json();
+
 
       // Memanggil fungsi lain untuk menangani data
       dispatch(requestsFetchSuccess(data.data));
@@ -95,7 +104,7 @@ export const fetchRequestById = (id) => {
       // api
       const response = await fetch(BASE_URL + "/api/requests/" + id, {
         headers: {
-          access_token : localStorage.getItem('access_token') // Menggunakan token akses yang telah Anda miliki
+          access_token : "localStorage.getItem('access_token')" // Menggunakan token akses yang telah Anda miliki
         }
       });
       
@@ -105,8 +114,6 @@ export const fetchRequestById = (id) => {
       // change data to json
       let data = await response.json();
 
-      console.log(data);
-      
       // call other fuction
       dispatch(requestByidFetchSuccess(data.data));
     } catch (error) {
@@ -130,7 +137,7 @@ export const addRequestHandler = (form) => {
         method: "post",
         headers: {
           "Content-Type": "application/json",
-          access_token : localStorage.getItem('access_token')
+          access_token : "localStorage.getItem('access_token')"
         },
         body: JSON.stringify(form),
       });
@@ -142,22 +149,20 @@ export const addRequestHandler = (form) => {
       if (!response.ok) throw new Error(data.message);
 
       // sweet alert
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "barang berhasil diproses",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      // Swal.fire({
+      //   position: "top-end",
+      //   icon: "success",
+      //   title: "barang berhasil diproses",
+      //   showConfirmButton: false,
+      //   timer: 1500,
+      // });
     } catch (error) {
       // sweet alert error
       console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error,
-      });
-
+      Alert.alert(
+        'gagal !!!',
+        `${error}`
+      );
       // dispatch error
       dispatch(error);
     }
@@ -168,11 +173,13 @@ export const deleteRequestHandler = (id) => {
   return async (dispatch) => {
     try {
 
+      
+
       // api
       const response = await fetch(BASE_URL + "/api/requests/" + id, {
         method: "delete",
         headers: {
-          access_token : localStorage.getItem('access_token')
+          access_token : "localStorage.getItem('access_token')"
         },
       });
 
@@ -183,22 +190,10 @@ export const deleteRequestHandler = (id) => {
       if (!response.ok) throw new Error(data.message);
 
       // sweet alert
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "berhasil menghapus",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      
     } catch (error) {
       // sweet alert error
       console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error,
-      });
-
       // dispatch error
       dispatch(error);
     }
@@ -214,10 +209,12 @@ export const updateRequestHandler = (form,id) => {
         method: "put",
         headers: {
           "Content-Type": "application/json",
-          access_token : localStorage.getItem('access_token')
+          access_token : "localStorage.getItem('access_token')"
         },
         body: JSON.stringify(form),
       });
+
+    console.log(response);
 
       // change data response to json
       const data = await response.json();
@@ -225,22 +222,12 @@ export const updateRequestHandler = (form,id) => {
       // contional if error
       if (!response.ok) throw new Error(data.message);
 
-      // sweet alert
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "barang berhasil di update",
-        showConfirmButton: false,
-        timer: 1500,
-      });
     } catch (error) {
-      // sweet alert error
       console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error,
-      });
+      Alert.alert(
+        'gagal !!!',
+        `${error}`
+      );
 
       // dispatch error
       dispatch(error);
@@ -267,22 +254,13 @@ export const updateStatusRequestHandler = (form,id) => {
       // contional if error
       if (!response.ok) throw new Error(data.message);
 
-      // sweet alert
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "barang berhasil di update",
-        showConfirmButton: false,
-        timer: 1500,
-      });
     } catch (error) {
       // sweet alert error
       console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error,
-      });
+      Alert.alert(
+        'gagal !!!',
+        `${error}`
+      );
 
       // dispatch error
       dispatch(error);
@@ -347,7 +325,7 @@ export const fetchTracks = (id) => {
       // api
       const response = await fetch(BASE_URL + "/api/tracks/" + id, {
         headers: {
-          access_token : localStorage.getItem('access_token') // Menggunakan token akses yang telah Anda miliki
+          access_token : "localStorage.getItem('access_token') "// Menggunakan token akses yang telah Anda miliki
         }
       });
 
@@ -375,7 +353,7 @@ export const fetchUsers = (search = "") => {
       // api
       const response = await fetch(BASE_URL + `/api/users?search=${search}`, {
         headers: {
-          access_token : localStorage.getItem('access_token') // Menggunakan token akses yang telah Anda miliki
+          access_token : "localStorage.getItem('access_token')" // Menggunakan token akses yang telah Anda miliki
         }
       });
 
@@ -404,7 +382,7 @@ export const addUserHandler = (form) => {
         method: "post",
         headers: {
           "Content-Type": "application/json",
-          access_token : localStorage.getItem('access_token')
+          access_token : "localStorage.getItem('access_token')"
         },
         body: JSON.stringify(form),
       });
@@ -416,21 +394,13 @@ export const addUserHandler = (form) => {
       if (!response.ok) throw new Error(data.message);
 
       // sweet alert
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "pelanggan berhasil di buat",
-        showConfirmButton: false,
-        timer: 1500,
-      });
     } catch (error) {
       // sweet alert error
       console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error,
-      });
+      Alert.alert(
+        'gagal !!!',
+        `${error}`
+      );
 
       // dispatch error
       dispatch(error);
@@ -446,7 +416,7 @@ export const deleteUserHandler = (id) => {
       const response = await fetch(BASE_URL + "/api/users/" + id, {
         method: "delete",
         headers: {
-          access_token : localStorage.getItem('access_token')
+          access_token : "localStorage.getItem('access_token')"
         },
       });
 
@@ -455,23 +425,13 @@ export const deleteUserHandler = (id) => {
 
       // contional if error
       if (!response.ok) throw new Error(data.message);
-
-      // sweet alert
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "berhasil menghapus",
-        showConfirmButton: false,
-        timer: 1500,
-      });
     } catch (error) {
       // sweet alert error
       console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error,
-      });
+      Alert.alert(
+        'gagal !!!',
+        `${error}`
+      );
 
       // dispatch error
       dispatch(error);
@@ -486,7 +446,7 @@ export const fetchUserById = (id) => {
       // api
       const response = await fetch(BASE_URL + "/api/users/" + id, {
         headers: {
-          access_token : localStorage.getItem('access_token') // Menggunakan token akses yang telah Anda miliki
+          access_token : "localStorage.getItem('access_token') "// Menggunakan token akses yang telah Anda miliki
         }
       });
       
@@ -496,14 +456,17 @@ export const fetchUserById = (id) => {
       // change data to json
       let data = await response.json();
 
-      console.log(data);
-      
       // call other fuction
       dispatch(userByidFetchSuccess(data.data));
     } catch (error) {
 
       // log error
-      console.log(error);
+
+      Alert.alert(
+        'gagal !!!',
+        `${error}`
+      );
+
     }
   };
 };
@@ -516,7 +479,7 @@ export const updateUserHandler = (form,id) => {
         method: "put",
         headers: {
           "Content-Type": "application/json",
-          access_token : localStorage.getItem('access_token')
+          access_token : "localStorage.getItem('access_token')"
         },
         body: JSON.stringify(form),
       });
@@ -528,21 +491,13 @@ export const updateUserHandler = (form,id) => {
       if (!response.ok) throw new Error(data.message);
 
       // sweet alert
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "pelanggan berhasil di update",
-        showConfirmButton: false,
-        timer: 1500,
-      });
     } catch (error) {
       // sweet alert error
       console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error,
-      });
+      Alert.alert(
+        'gagal !!!',
+        `${error}`
+      );
 
       // dispatch error
       dispatch(error);
@@ -556,8 +511,6 @@ export const fetchRequestsOwner = (startDate = "", endDate = "") => {
     try {
       // Membangun URL berdasarkan filter, pencarian, dan rentang waktu
 
-      console.log(startDate,endDate);
-
 
       let url = BASE_URL + `/api/requests-owner?`;
       if (startDate && endDate) {
@@ -567,7 +520,7 @@ export const fetchRequestsOwner = (startDate = "", endDate = "") => {
       // Mengirim permintaan GET ke API dengan URL yang dibangun
       const response = await fetch(url, {
         headers: {
-          access_token: localStorage.getItem("access_token"),
+          access_token: "localStorage.getItem('access_token')",
         },
       });
 
@@ -581,7 +534,7 @@ export const fetchRequestsOwner = (startDate = "", endDate = "") => {
 
 
       // Memanggil fungsi lain untuk menangani data
-      dispatch(requestsFetchSuccess(data.data));
+      dispatch(requestsOwnerFetchSuccess(data.data));
     } catch (error) {
       // Log error
       console.error(error);

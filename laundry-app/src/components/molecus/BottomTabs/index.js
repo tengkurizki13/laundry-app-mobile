@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 import React from 'react'
-import { FontAwesome,Ionicons,Entypo,Feather } from '@expo/vector-icons';
+import { FontAwesome,Ionicons,Entypo,Feather,AntDesign } from '@expo/vector-icons';
 
 
 const Icon = ({label,focus}) => {
@@ -11,7 +11,9 @@ const Icon = ({label,focus}) => {
         case "Userscreen":
             return focus ? <Entypo name="users" size={24} color="black" /> : <Feather name="users" size={24} color="black" />
               break;
-    
+        case "Statisticscreen":
+          return focus ? <AntDesign name="barschart" size={24} color="black" /> : <AntDesign name="barchart" size={24} color="black" />
+            break;
         default:
             break;
     }
@@ -21,7 +23,7 @@ const Icon = ({label,focus}) => {
 
 const ButtomTabs = ({ state, descriptors, navigation }) => {
   return (
-    <View style={{ flexDirection: 'row',justifyContent: 'space-between',paddingVertical:10,paddingHorizontal:100 }}>
+    <View style={{ flexDirection: 'row',justifyContent: 'space-between',paddingVertical:10,paddingHorizontal:50 }}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
