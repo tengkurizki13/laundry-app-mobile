@@ -8,7 +8,8 @@ const Splashscreen = ({navigation}) => {
     const animation = useRef(null);
     useEffect(() => {
         setTimeout(() => {
-            navigation.navigate("MainApp")
+            // navigation.navigate("MainApp")
+            navigation.navigate("Qrcodescreen")
         },2000)
     },[])
 
