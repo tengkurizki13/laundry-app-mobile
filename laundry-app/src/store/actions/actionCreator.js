@@ -238,25 +238,32 @@ export const updateRequestHandler = (form,id) => {
 export const updateStatusRequestHandler = (form,id) => {
   return async (dispatch) => {
     try {
+      console.log("masuik");
       // api
       const response = await fetch(BASE_URL + "/api/requests-status/" + id, {
         method: "put",
         headers: {
           "Content-Type": "application/json",
-          access_token : localStorage.getItem('access_token')
+          access_token : "localStorage"
         },
         body: JSON.stringify(form),
       });
 
+          console.log(response,"ini data");
       // change data response to json
       const data = await response.json();
 
       // contional if error
       if (!response.ok) throw new Error(data.message);
+      Alert.alert(
+        'berahasil',
+        `yes`
+      );
+
 
     } catch (error) {
       // sweet alert error
-      console.log(error);
+      console.log(error,"masuk");
       Alert.alert(
         'gagal !!!',
         `${error}`

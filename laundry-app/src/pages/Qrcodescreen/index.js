@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView,Alert } from 'react-native';
 import tw from 'twrnc';
 
-const Qrcodescreen = () => {
+const Qrcodescreen = ({navigation}) => {
   const [qrCodeSrc, setQrCodeSrc] = useState('');
-  const [imgCon, setImgCon] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const socket = io('https://82g27vh3-3000.asse.devtunnels.ms');
 
     socket.on('qr', (src) => {
-      // console.log(src,"ini di clien");
       setQrCodeSrc(src);
       setIsLoading(false);
     });
@@ -23,7 +21,13 @@ const Qrcodescreen = () => {
     });
 
     socket.on('log', (log) => {
-      console.log(log);
+      if (log == "connected") {
+        navigation.navigate("MainApp")
+      }else if(log == "scan"){
+        Alert.alert(
+          'tolong scan dulu ya!!!',
+        );
+      }
     });
 
     socket.on('connect_error', (error) => {

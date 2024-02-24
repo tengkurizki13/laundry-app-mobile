@@ -3,7 +3,7 @@ import React, { useState,useEffect } from 'react';
 import { ScrollView, Text, View, TouchableOpacity, TextInput, Modal,Alert,Pressable } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { AntDesign, Fontisto, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { fetchRequests,deleteRequestHandler} from '../../store/actions/actionCreator';
+import { fetchRequests,deleteRequestHandler,updateStatusRequestHandler} from '../../store/actions/actionCreator';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -70,6 +70,19 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
     const formattedEndDate = endDate ? format(endDate, 'yyyy-MM-dd') : '';
     setSelectedStatus(newStatus);
     dispatch(fetchRequests(newStatus,searchQuery,formattedStartDate,formattedEndDate)); 
+  };
+
+  const handleChangeStatusCard = (id,newStatus) => {
+    let data = {
+      status : newStatus
+     }
+     dispatch(updateStatusRequestHandler(data,id))
+     .then(() => {
+       dispatch(fetchRequests())
+       .then(() => {
+         setLoading(false)
+       })
+     })
   };
 
   const handleSearch = () => {
@@ -237,7 +250,7 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
               ) : (
                 <Picker
                   selectedValue={request.status}
-                  onValueChange={(itemValue) => handleChangeStatus(request.id, itemValue)}
+                  onValueChange={(itemValue) => handleChangeStatusCard(request.id, itemValue)}
                   style={{ height: 50, width: '100%', marginBottom: 10 }}
                 >
                   {/* Opsi status berdasarkan status pesanan saat ini */}
