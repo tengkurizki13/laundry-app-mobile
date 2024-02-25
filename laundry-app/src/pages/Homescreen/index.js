@@ -2,10 +2,11 @@ import tw from 'twrnc';
 import React, { useState,useEffect } from 'react';
 import { ScrollView, Text, View, TouchableOpacity, TextInput, Modal,Alert,Pressable } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { AntDesign, Fontisto, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Fontisto, FontAwesome5, MaterialCommunityIcons,FontAwesome6 } from '@expo/vector-icons';
 import { fetchRequests,deleteRequestHandler,updateStatusRequestHandler} from '../../store/actions/actionCreator';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
+import io from 'socket.io-client';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Homescreen = ({navigation}) => {
@@ -28,6 +29,13 @@ const Homescreen = ({navigation}) => {
 
 
   useEffect(() => {
+    const socket = io('https://82g27vh3-3000.asse.devtunnels.ms');
+    socket.on('log', (log) => {
+      console.log(log,"ini di home");
+      if (log != "connected") {
+        navigation.navigate("Qrcodescreen")
+      }
+    });
     dispatch(fetchRequests())
       .then(() => {
         setLoading(false)
@@ -73,17 +81,65 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
   };
 
   const handleChangeStatusCard = (id,newStatus) => {
-    let data = {
-      status : newStatus
-     }
-     dispatch(updateStatusRequestHandler(data,id))
-     .then(() => {
-       dispatch(fetchRequests())
-       .then(() => {
-         setLoading(false)
-       })
-     })
+    Alert.alert(
+      'Konfirmasi',
+      'Apakah Anda yakin ingin merubah tahap?',
+      [
+        {
+          text: 'Batal',
+          onPress: () => console.log('pembayaran dibatalkan'),
+          style: 'cancel',
+        },
+        {
+          text: 'Ya',
+          onPress: () => {
+            let data = {
+              status : newStatus
+             }
+             dispatch(updateStatusRequestHandler(data,id))
+             .then(() => {
+               dispatch(fetchRequests())
+               .then(() => {
+                 setLoading(false)
+               })
+             })
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
+
+  const handleCheckout = (id) => {
+    Alert.alert(
+      'Konfirmasi perubahan',
+      'Apakah Anda yakin ingin melakukan pembayaran?',
+      [
+        {
+          text: 'Batal',
+          onPress: () => console.log('perubahan dibatalkan'),
+          style: 'cancel',
+        },
+        {
+          text: 'Ya',
+          onPress: () => {
+            let data = {
+              status : "selesai"
+             }
+             dispatch(updateStatusRequestHandler(data,id))
+             .then(() => {
+               dispatch(fetchRequests())
+               .then(() => {
+                 setLoading(false)
+               })
+             })
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
 
   const handleSearch = () => {
     console.log('Search query:', searchQuery);
@@ -114,7 +170,6 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
             .then(() => {
               dispatch(fetchRequests())
               .then(() => {
-                setLoading(false)
               }).catch((error) =>{
                 console.log("Err",error);
               })
@@ -173,8 +228,8 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
   // contional if data not relode yet
   if (loading) {
     return (
-      <View>
-          <Text style={tw`font-semibold`}>Memuat ____ ...............</Text>
+      <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
+          <Text style={tw`font-semibold text-white`}>Memuat ____ ...............</Text>
       </View>
     )
   }
@@ -182,7 +237,7 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
   
 
   return (
-    <ScrollView contentContainerStyle={tw`flex-grow pt-20 items-center`}>
+    <ScrollView contentContainerStyle={tw`flex-grow pt-20 items-center bg-lime-400`}>
       <View style={tw`w-11/12`}>
         {/* Form Pencarian */}
         <View style={tw`mb-5 flex-row items-center justify-between`}>
@@ -224,26 +279,30 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
       <Text>Data kosong</Text>
     </View> 
     : 
-        <View>
+        <View >
         {requests.map((request, index) => (
           <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`} key={index}>
+            <View style={tw `flex-row items-center justify-between mb-5`}>
+            <Text style={tw`mb-2 text-gray-700 italic`}>
+              <Text style={tw`font-semibold`}></Text>{format(new Date(request.createdAt), 'dd MMM yyyy')}
+            </Text>
+            <Text style={tw`mb-2 text-gray-700 uppercase font-semibold`}>
+            {request.User.username}
+          </Text>
+            </View>
+            <View style={tw`bg-white rounded-lg p-5 shadow-md mb-3`}>
             <Text style={tw`mb-2 text-gray-700`}>
-              <Text style={tw`font-semibold`}>Order Id:</Text> {request.id}
+              <Text style={tw`font-semibold`}>OrderId =</Text> {request.id}
             </Text>
             <Text style={tw`mb-2 text-gray-700`}>
-              <Text style={tw`font-semibold`}>Pelanggan:</Text> {request.User.username}
+              <Text style={tw`font-semibold`}>Timbangan =</Text> {request.scale} Kg
             </Text>
             <Text style={tw`mb-2 text-gray-700`}>
-              <Text style={tw`font-semibold`}>Waktu:</Text>{format(new Date(request.createdAt), 'dd MMM yyyy')}
+              <Text style={tw`font-semibold`}>Harga =</Text> Rp. {request.price}
             </Text>
+            </View>
             <Text style={tw`mb-2 text-gray-700`}>
-              <Text style={tw`font-semibold`}>Timbangan:</Text> {request.scale} Kg
-            </Text>
-            <Text style={tw`mb-2 text-gray-700`}>
-              <Text style={tw`font-semibold`}>Harga:</Text> Rp. {request.price}
-            </Text>
-            <Text style={tw`mb-2 text-gray-700`}>
-              <Text style={tw`font-semibold`}>Status</Text>
+              <Text style={tw`font-semibold`}>Tahap</Text>
             </Text>
             {request.status === 'selesai' ? (
                 <Text style={{ color: 'green', marginBottom: 10 }} className='fst-italic'>Selesai!!!</Text>
@@ -282,20 +341,20 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
                   </TouchableOpacity>
                 ) : request.status === 'pembayaran' ? (
                   <TouchableOpacity style={tw`bg-gray-500 rounded p-2 flex-row items-center`} onPress={() => handleCheckout(request.id)}>
-                    <Text style={tw`text-white text-sm font-semibold me-1`}>Checkout</Text>
+                    <Text style={tw`text-white text-sm font-semibold me-1`}><FontAwesome6 name="money-check-dollar" size={24} color="black" /></Text>
                   </TouchableOpacity>
                 ) : (
                   <>
                     <TouchableOpacity style={tw`bg-yellow-500 rounded p-2 flex-row items-center`} onPress={() => navigateToForm("edit", request.id)}>
-                      <Text style={tw`text-white text-sm font-semibold me-1`}>update card</Text>
+                      <Text style={tw`text-white text-sm font-semibold me-1`}><FontAwesome5 name="edit" size={24} color="black" /></Text>
                     </TouchableOpacity>
                   </>
                 )}
                 <TouchableOpacity style={tw`bg-blue-500 rounded p-2 flex-row items-center`} onPress={() => changePageToTrack(request.id)}>
-                  <Text style={tw`text-white text-sm font-semibold me-1`}>track card</Text>
+                  <Text style={tw`text-white text-sm font-semibold me-1`}><FontAwesome6 name="backward-step" size={24} color="black" /></Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={tw`bg-red-500 rounded p-2 flex-row items-center`} onPress={() => handleDelete(request.id)}>
-                  <Text style={tw`text-white text-sm font-semibold me-1`}>Hapus</Text>
+                  <Text style={tw`text-white text-sm font-semibold me-1`}><FontAwesome6 name="trash-can" size={24} color="black" /></Text>
                 </TouchableOpacity>
               </View>
           </View>

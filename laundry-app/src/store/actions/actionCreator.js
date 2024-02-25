@@ -130,8 +130,6 @@ export const fetchRequestById = (id) => {
 export const addRequestHandler = (form) => {
   return async (dispatch) => {
     try {
-
-      console.log(form);
       // api
       const response = await fetch(BASE_URL + "/api/requests", {
         method: "post",
@@ -148,17 +146,7 @@ export const addRequestHandler = (form) => {
       // contional if error
       if (!response.ok) throw new Error(data.message);
 
-      // sweet alert
-      // Swal.fire({
-      //   position: "top-end",
-      //   icon: "success",
-      //   title: "barang berhasil diproses",
-      //   showConfirmButton: false,
-      //   timer: 1500,
-      // });
     } catch (error) {
-      // sweet alert error
-      console.log(error);
       Alert.alert(
         'gagal !!!',
         `${error}`
@@ -214,14 +202,11 @@ export const updateRequestHandler = (form,id) => {
         body: JSON.stringify(form),
       });
 
-    console.log(response);
-
       // change data response to json
       const data = await response.json();
 
       // contional if error
       if (!response.ok) throw new Error(data.message);
-
     } catch (error) {
       console.log(error);
       Alert.alert(
@@ -256,8 +241,7 @@ export const updateStatusRequestHandler = (form,id) => {
       // contional if error
       if (!response.ok) throw new Error(data.message);
       Alert.alert(
-        'berahasil',
-        `yes`
+        'kamu berhasil merubah tahap nya',
       );
 
 
@@ -496,6 +480,7 @@ export const updateUserHandler = (form,id) => {
 
       // contional if error
       if (!response.ok) throw new Error(data.message);
+      
 
       // sweet alert
     } catch (error) {
@@ -536,7 +521,6 @@ export const fetchRequestsOwner = (startDate = "", endDate = "") => {
       if (!response.ok) throw new Error("upss something wrong");
 
       // Mengonversi data respons menjadi JSON
-      console.log(response);
       const data = await response.json();
 
 

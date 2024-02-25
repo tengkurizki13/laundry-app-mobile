@@ -1,7 +1,7 @@
 // router.js
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Splashscreen,Trackscreen,FormAddRequestscreen,FormUpdateRequestscreen,FormAddUserscreen,FormUpdateUserscreen,Qrcodescreen } from '../pages';
+import { Splashscreen,Trackscreen,FormAddRequestscreen,FormUpdateRequestscreen,FormAddUserscreen,FormUpdateUserscreen,Qrcodescreen,Loginscreen,Statisticscreen } from '../pages';
 import MainApp from './MainApp';
 
 const Stack = createStackNavigator();
@@ -16,6 +16,8 @@ const Router = () => {
       <Stack.Screen name="FormUpdateRequestscreen" component={FormUpdateRequestscreen} />
       <Stack.Screen name="FormUpdateUserscreen" component={FormUpdateUserscreen} />
       <Stack.Screen name="Qrcodescreen" component={Qrcodescreen} />
+      <Stack.Screen name="Loginscreen" component={Loginscreen} />
+      <Stack.Screen name="Statisticscreen" component={Statisticscreen} />
       <Stack.Screen name="MainApp" component={MainApp} />
     </Stack.Navigator>
   );

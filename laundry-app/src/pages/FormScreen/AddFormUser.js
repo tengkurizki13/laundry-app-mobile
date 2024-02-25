@@ -1,14 +1,12 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity,Alert } from 'react-native';
 import tw from 'twrnc';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchUsers,addUserHandler } from '../../store/actions/actionCreator';
 
 const AddFormUser = ({navigation}) => {
 
   const dispatch = useDispatch()
-  // state
-  const {users} = useSelector(((state) => state.user))
 
   // State
   const [data, setData] = useState({
@@ -24,7 +22,6 @@ const AddFormUser = ({navigation}) => {
   // Fungsi untuk menangani submit form
   const handleSubmit = () => {
     // Lakukan penanganan submit di sini, Anda dapat mengirimkan data ke server atau melakukan tindakan lain sesuai kebutuhan
-    console.log('Form submitted:', data);
     dispatch(addUserHandler(data))
       .then(() => {
         // move to router / if successfully
@@ -46,7 +43,7 @@ const AddFormUser = ({navigation}) => {
 
   return (
     <View style={tw`flex-1 justify-center items-center`}>
-      <Text style={tw`text-lg mb-4`}>Form Menambah customer</Text>
+      <Text style={tw`text-lg mb-4 font-semibold italic pb-5`}>Form Menambah customer</Text>
       <View style={tw`w-3/4`}>
         <TextInput
           style={tw`border border-gray-400 p-2 rounded mb-2`}
@@ -61,7 +58,7 @@ const AddFormUser = ({navigation}) => {
           onChangeText={(value) => handleChange('phoneNumber', value)}
         />
         <TouchableOpacity
-          style={tw`bg-blue-500 p-3 rounded justify-center items-center`}
+          style={tw`bg-green-500 p-3 rounded justify-center items-center`}
           onPress={handleSubmit}
         >
           <Text style={tw`text-white`}>Submit</Text>

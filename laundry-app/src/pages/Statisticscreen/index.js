@@ -81,11 +81,32 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
     setEndOfDate("")
   };
 
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'proses':
+        return 'gray';
+      case 'penimbangan':
+        return 'orange';
+      case 'pencucian':
+        return 'blue';
+      case 'pengeringan':
+        return 'brown';
+      case 'pengemasan':
+        return 'purple';
+      case 'pembayaran':
+        return 'red';
+      case 'selesai':
+        return 'green';
+      default:
+        return 'gray'; 
+    }
+  };
+
   // contional if data not relode yet
   if (loading) {
     return (
-      <View>
-          <Text style={tw`font-semibold`}>Memuat ____ ...............</Text>
+      <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
+          <Text style={tw`font-semibold text-white`}>Memuat ____ ...............</Text>
       </View>
     )
   }
@@ -93,7 +114,7 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
   
 
   return (
-    <ScrollView contentContainerStyle={tw`flex-grow pt-20 items-center`}>
+    <ScrollView contentContainerStyle={tw`flex-grow pt-20 items-center bg-lime-400`}>
       <View style={tw`w-11/12`}>
         <View>
           <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`}>
@@ -119,19 +140,22 @@ const handleChangeEndDatepicker = ({type} , selectedDate) => {
         <View>
         {requestsOwner.map((request, index) => (
           <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`} key={index}>
+            <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`} key={index}>
             <Text style={tw`mb-2 text-gray-700`}>
-              <Text style={tw`font-semibold`}>Jumlah Order:</Text> {request.jumlahOrder}
+              <Text style={tw`font-semibold`}>Jumlah laundry = </Text> {request.jumlahOrder} laundry
             </Text>
             <Text style={tw`mb-2 text-gray-700`}>
-              <Text style={tw`font-semibold`}>total pembayaran:</Text> {request.totalpembayaran}
+              <Text style={tw`font-semibold`}>Total pembayaran = </Text>Rp.  {request.totalpembayaran}
             </Text>
             <Text style={tw`mb-2 text-gray-700`}>
-              <Text style={tw`font-semibold`}>jumlah Timbangan:</Text> {request.jumlahTimbangan} Kg
+              <Text style={tw`font-semibold`}>Jumlah timbangan = </Text> {request.jumlahTimbangan} Kg
             </Text>
-            <View style={tw`flex-row justify-between`}>
-                <TouchableOpacity style={tw`bg-gray-500 rounded p-2 flex-row items-center`}>
-                        <Text style={tw`text-white text-sm font-semibold me-1`}>Status : {request.typeStatus}</Text>
-                </TouchableOpacity>
+            </View>
+            <View style={tw`flex-row`}>
+              <Text style={tw`text-sm  me-1`}>Tahap : </Text>
+              <TouchableOpacity style={[tw`rounded p-1 flex-row items-center`, { backgroundColor: getStatusColor(request.typeStatus) }]}>
+                <Text style={tw`text-white text-sm font-semibold`}>{request.typeStatus}</Text>
+              </TouchableOpacity>
             </View>
           </View>
           ))}

@@ -32,9 +32,9 @@ const UpdateFormRequest = ({ navigation, route }) => {
 
   useEffect(() => {
     setData({
-      scale: request?.scale.toString(), // Mengonversi ke string
-      price: request?.price.toString(), // Mengonversi ke string
-      userId: request?.userId.toString() // Mengonversi ke string
+      scale: String(request?.scale), // Mengonversi ke string
+      price: String(request?.price), // Mengonversi ke string
+      userId: String(request?.userId) // Mengonversi ke string
     });
   },[request])
 
@@ -57,15 +57,15 @@ const UpdateFormRequest = ({ navigation, route }) => {
 
   if (loading) {
     return (
-      <View>
-        <Text style={tw`font-semibold`}>Memuat ____ ...............</Text>
+      <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
+          <Text style={tw`font-semibold text-white`}>Memuat ____ ...............</Text>
       </View>
     );
   }
 
   return (
     <View style={tw`flex-1 justify-center items-center`}>
-      <Text style={tw`text-lg mb-4`}>Form edit card laundry</Text>
+      <Text style={tw`text-lg  font-semibold italic pb-5`}>Form edit card laundry</Text>
       <View style={tw`w-3/4`}>
         <TextInput
           style={tw`border border-gray-400 p-2 rounded mb-2`}
@@ -93,7 +93,7 @@ const UpdateFormRequest = ({ navigation, route }) => {
           }}
         />
         <TouchableOpacity
-          style={tw`bg-blue-500 p-3 rounded justify-center items-center`}
+          style={tw`bg-green-500 p-3 rounded justify-center items-center`}
           onPress={handleSubmit}
         >
           <Text style={tw`text-white`}>Submit</Text>

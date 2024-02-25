@@ -43,7 +43,6 @@ const UpdateFormUser = ({navigation,route}) => {
   // Fungsi untuk menangani submit form
   const handleSubmit = () => {
     // Lakukan penanganan submit di sini, Anda dapat mengirimkan data ke server atau melakukan tindakan lain sesuai kebutuhan
-    console.log('Form submitted:', data);
     dispatch(updateUserHandler(data,id))
       .then(() => {
         // move to router / if successfully
@@ -59,15 +58,14 @@ const UpdateFormUser = ({navigation,route}) => {
       })
       .catch(() => {
         // stay in this page
-        
-        navigation.navigate('FormUpdateUserscreen');
+        navigation.navigate('FormUpdateUserscreen',{ id });
       })
   };
 
 
   return (
     <View style={tw`flex-1 justify-center items-center`}>
-      <Text style={tw`text-lg mb-4`}>Form Menambah customer</Text>
+      <Text style={tw`text-lg mb-4 text-lg mb-4 font-semibold italic pb-5`}>Form mengedit customer</Text>
       <View style={tw`w-3/4`}>
         <TextInput
           style={tw`border border-gray-400 p-2 rounded mb-2`}
@@ -82,7 +80,7 @@ const UpdateFormUser = ({navigation,route}) => {
           onChangeText={(value) => handleChange('phoneNumber', value)}
         />
         <TouchableOpacity
-          style={tw`bg-blue-500 p-3 rounded justify-center items-center`}
+          style={tw`bg-green-500 p-3 rounded justify-center items-center`}
           onPress={handleSubmit}
         >
           <Text style={tw`text-white`}>Submit</Text>

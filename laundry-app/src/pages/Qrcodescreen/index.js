@@ -21,6 +21,7 @@ const Qrcodescreen = ({navigation}) => {
     });
 
     socket.on('log', (log) => {
+      console.log(log);
       if (log == "connected") {
         navigation.navigate("MainApp")
       }else if(log == "scan"){

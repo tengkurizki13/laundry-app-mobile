@@ -1,41 +1,28 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect,useRef } from 'react'
+import React, { useEffect, useRef } from 'react';
+import { View, Text } from 'react-native';
+import tw from 'twrnc';
 import LottieView from 'lottie-react-native';
 
+const Splashscreen = ({ navigation }) => {
+  const animation = useRef(null);
 
-
-const Splashscreen = ({navigation}) => {
-    const animation = useRef(null);
-    useEffect(() => {
-        setTimeout(() => {
-            // navigation.navigate("MainApp")
-            navigation.navigate("Qrcodescreen")
-        },2000)
-    },[])
+  useEffect(() => {
+    setTimeout(() => {
+      // navigation.navigate("MainApp")
+      navigation.navigate("Loginscreen")
+    }, 2000);
+  }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
       <LottieView
         autoPlay
         ref={animation}
-        style={{
-          width: 100,
-          height: 100,
-        }}
-        // Find more Lottie files at https://lottiefiles.com/featured
+        style={tw`w-20 h-20`}
         source={require('../../assets/images/laundry.json')}
       />
     </View>
-  )
-}
+  );
+};
 
-export default Splashscreen
-
-const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        backgroundColor: "#FFFFFF",
-        justifyContent:"center",
-        alignItems: 'center',
-    }
-})
+export default Splashscreen;

@@ -26,38 +26,38 @@ const Trackscreen = ({ route }) => {
 
   if (loading) {
     return (
-      <View>
-          <Text style={tw`font-semibold`}>Memuat ____ ...............</Text>
+      <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
+           <Text style={tw`font-semibold text-white`}>Memuat ____ ...............</Text>
       </View>
     )
   }
 
   return (
-    <ScrollView contentContainerStyle={tw`bg-gray-100 p-4 flex-grow`}>
-      <View style={tw`bg-white p-4 rounded-md`}>
-        <View style={tw`flex-row justify-between mb-4`}>
-          <View style={tw`flex-1 mr-2`}>
+    <ScrollView contentContainerStyle={tw`bg-gray-100 p-4 flex-grow bg-lime-400`}>
+      <View style={tw`bg-white p-4 rounded-md mt-5`}>
+        <View style={tw`flex-row justify-between my-4`}>
+          <View style={tw`flex-1 mr-2 mb-5`}>
             <Text style={tw`text-sm text-gray-500`}>Date</Text>
             <Text>{format(new Date(tracks[0].Request.createdAt), 'dd MMM yyyy HH:mm:ss')}</Text>
           </View>
-          <View style={tw`flex-1 ml-2`}>
+          <View style={tw`flex-1 ml-2 mb-5`}>
             <Text style={tw`text-sm text-gray-500`}>Order No.</Text>
             <Text>{tracks[0].Request.id}</Text>
           </View>
         </View>
 
-        <Text style={tw`text-sm text-gray-500 mb-2`}>Tracking Order</Text>
+        <Text style={tw`text-sm text-gray-500 mb-2 mb-5 font-semibold italic`}>Riwayat laundry</Text>
 
-        <View style={tw`flex flex-col`}>
+        <View style={tw`flex flex-col my-5`}>
           {tracks.map((track, index) => (
             <View key={index} style={tw`items-center mb-2`}>
-              <Text style={tw`bg-orange-500 text-white px-3 py-1 rounded-md mb-1`}>{track.status}</Text>
-              <Text>{format(new Date(track.createdAt), 'dd MMM HH:mm')}</Text>
+              <Text style={tw`bg-green-500 text-white px-3 py-1 rounded-md mb-1`}>{track.status}</Text>
+              <Text style={tw`text-gray-500 mb-5 italic`}>{format(new Date(track.createdAt), 'dd MMM HH:mm')}</Text>
             </View>
           ))}
         </View>
         
-        <Text style={tw`mt-4`}>Want any help? <Text style={tw`text-orange-500`}>Please contact us</Text></Text>
+        <Text style={tw`mt-4 italic`}>"silahkan hubungi developer jika ada kendala ya!!"</Text>
       </View>
     </ScrollView>
   );

@@ -13,7 +13,6 @@ function MainApp() {
     <Tab.Navigator screenOptions={{ headerShown:false }} tabBar={props => <ButtomTabs {...props} />}>
       <Tab.Screen name="Homescreen" component={Homescreen} />
       <Tab.Screen name="Userscreen" component={Userscreen} />
-      <Tab.Screen name="Statisticscreen" component={Statisticscreen} />
     </Tab.Navigator>
     
   );

@@ -8,6 +8,7 @@ import FormUpdateRequestscreen from "./FormScreen/UpdateFormRequest";
 import FormAddUserscreen from "./FormScreen/AddFormUser";
 import FormUpdateUserscreen from "./FormScreen/UpdateFormUser";
 import Qrcodescreen from "./Qrcodescreen";
+import Loginscreen from "./Loginscreen";
 
 
 export {
@@ -20,5 +21,6 @@ export {
     FormUpdateRequestscreen,
     FormAddUserscreen,
     FormUpdateUserscreen,
-    Qrcodescreen
+    Qrcodescreen,
+    Loginscreen
 }

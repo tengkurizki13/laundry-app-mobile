@@ -1,7 +1,7 @@
 import tw from 'twrnc';
 import React, { useState,useEffect } from 'react';
 import { ScrollView, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
-import { AntDesign,MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign,MaterialCommunityIcons,FontAwesome5,FontAwesome6 } from '@expo/vector-icons';
 import { fetchUsers,deleteUserHandler,fetchRequests} from '../../store/actions/actionCreator';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
@@ -51,6 +51,9 @@ const Userscreen = ({navigation}) => {
               .then(() => {
                 dispatch(fetchRequests())
                 .then(() => {
+                  Alert.alert(
+                    'Berhasil menghapus customer !!!',
+                  );
                   setLoading(false)
                 }).catch((error) =>{
                   console.log("Err",error);
@@ -85,8 +88,8 @@ const Userscreen = ({navigation}) => {
   // contional if data not relode yet
   if (loading) {
     return (
-      <View>
-          <Text style={tw`font-semibold`}>Memuat ____ ...............</Text>
+      <View style={tw`flex-1 bg-white justify-center items-center bg-lime-400`}>
+          <Text style={tw`font-semibold text-white`}>Memuat ____ ...............</Text>
       </View>
     )
   }
@@ -94,13 +97,13 @@ const Userscreen = ({navigation}) => {
   
 
   return (
-    <ScrollView contentContainerStyle={tw`flex-grow pt-20 items-center`}>
+    <ScrollView contentContainerStyle={tw`flex-grow pt-20 items-center bg-lime-400`}>
       <View style={tw`w-11/12`}>
         {/* Form Pencarian */}
         <View style={tw`mb-5 flex-row items-center justify-between`}>
           <TextInput
             style={tw`flex-1 bg-white border-2 border-gray-300 rounded-full px-4 py-3 shadow-md`}
-            placeholder="search by order id"
+            placeholder="search by username"
             onChangeText={(text) => setSearchQuery(text)}
             onSubmitEditing={handleSearch}
           />
@@ -133,22 +136,25 @@ const Userscreen = ({navigation}) => {
         <View>
         {users.map((user, index) => (
           <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`} key={index}>
+             <Text style={tw`mb-2 text-gray-700`}>terdaftar pada
+              <Text style={tw`font-semibold italic`}> {format(new Date(user.createdAt), 'dd MMM yyyy')}</Text>
+            </Text>
+
+            <View style={tw`bg-white rounded-lg p-5 shadow-md mb-5`}>
             <Text style={tw`mb-2 text-gray-700`}>
-              <Text style={tw`font-semibold`}>Nama</Text> {user.username}
+              <Text style={tw`font-semibold`}>Nama = </Text> {user.username}
             </Text>
             <Text style={tw`mb-2 text-gray-700`}>
-              <Text style={tw`font-semibold`}>No Wa </Text> {user.phoneNumber}
+              <Text style={tw`font-semibold`}>No Wa =  </Text> {user.phoneNumber}
             </Text>
-            <Text style={tw`mb-2 text-gray-700`}>
-              <Text style={tw`font-semibold`}>Registered:</Text>{format(new Date(user.createdAt), 'dd MMM yyyy')}
-            </Text>
+            </View>
             {/* Tombol-tombol aksi */}
             <View style={tw`flex-row justify-between`}>
                  <TouchableOpacity style={tw`bg-yellow-500 rounded p-2 flex-row items-center`} onPress={() => navigateToForm("edit", user.id)}>
-                  <Text style={tw`text-white text-sm font-semibold me-1`}>edit card</Text>
+                  <Text style={tw`text-white text-sm font-semibold me-1`}><FontAwesome5 name="edit" size={24} color="black" /></Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={tw`bg-red-500 rounded p-2 flex-row items-center`} onPress={() => handleDelete(user.id)}>
-                  <Text style={tw`text-white text-sm font-semibold me-1`}>Hapus</Text>
+                  <Text style={tw`text-white text-sm font-semibold me-1`}><FontAwesome6 name="trash-can" size={24} color="black" /></Text>
                 </TouchableOpacity>
               </View>
           </View>
